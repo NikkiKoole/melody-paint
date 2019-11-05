@@ -5,10 +5,23 @@ function love.keypressed(key)
    if key == "escape" then
       love.event.quit()
    end
+   if key == "left" then
+      bpm = bpm - 10
+      bpm = math.max(10, bpm)
+      channel.main2audio:push({type="bpm", data=bpm});
+   end
+   if key == "right" then
+      bpm = bpm + 10
+      bpm = math.min(300, bpm)
+
+      channel.main2audio:push({type="bpm", data=bpm});
+   end
+
 end
 
 
 function love.load()
+   bpm = 90
    thread = love.thread.newThread( 'audio.lua' )
    thread:start()
    channel		= {};
@@ -73,7 +86,7 @@ function love.load()
       table.insert(samples, love.audio.newSource(data, 'static'))
    end
    channel.main2audio:push({type="samples", data=samples});
-
+   channel.main2audio:push({type="bpm", data=bpm});
 end
 
 function love.update(dt)

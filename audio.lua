@@ -28,7 +28,7 @@ end
 
 function getPitch(semitone)
    local plusoctave = 0
-   local octave = 0
+   local octave = -1
    if semitone > 11 then
       plusoctave = 1
       semitone = semitone % 12
@@ -56,15 +56,7 @@ end
 
 while(true) do
 
-   local v = channel.main2audio:pop();
-   if v then
-      if (v.type == 'pattern') then
-	 pattern = v.data
-      end
-      if (v.type == 'samples') then
-	 samples = v.data
-      end
-   end
+
 
    local n = love.timer.getTime()
    local delta = n - now
@@ -102,5 +94,21 @@ while(true) do
    lastTick = tick
    lastBeat = beat
    love.timer.sleep(0.01)
+
+      local v = channel.main2audio:pop();
+   if v then
+      if (v.type == 'pattern') then
+	 pattern = v.data
+      end
+      if (v.type == 'samples') then
+	 samples = v.data
+      end
+      if (v.type == 'bpm') then
+	 bpm = v.data
+	 tick = lastTick
+	 beat = lastBeat
+      end
+
+   end
 
 end
