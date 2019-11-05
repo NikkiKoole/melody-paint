@@ -7,30 +7,16 @@ function love.keypressed(key)
    end
 end
 
-function love.update(dt)
-   local bpm = 30
-   local multiplier = (60/(bpm*4))
-   if playing then
-      timeInBeat = timeInBeat + dt
-      time = time + dt
-      --print(timeInBeat/multiplier )
-      if timeInBeat > multiplier then
-	 timeInBeat = 0
-	 playHead = playHead + 1
-	 if playHead > horizontal-1 then
-	    playHead = 0
-	 end
-      end
-   end
-
-end
-
 
 function love.load()
+   thread = love.thread.newThread( 'audio.lua' )
+   thread:start()
+   channel		= {};
+   channel.audio2main	= love.thread.getChannel ( "audio2main" )
+   channel.main2audio	= love.thread.getChannel ( "main2audio" )
+
    playing = true
-   time = 0
-   playHead = 0
-   timeInBeat = 0
+   playhead = 0
 
    screenWidth = 1024
    screenHeight = 768
@@ -69,6 +55,16 @@ function love.load()
 
 end
 
+function love.update(dt)
+   local v = channel.audio2main:pop();
+   if v then
+      if (v.type == 'playhead') then
+	 playhead = v.data % horizontal
+      end
+   end
+end
+
+
 function initPage()
    local result = {}
    for x = 1, horizontal do
@@ -88,6 +84,9 @@ function love.mousepressed(x,y)
 	 local cx =  1 + math.floor((x - leftmargin) / cellWidth)
 	 local cy =  1 + math.floor((y - topmargin) / cellHeight)
 	 page[cx][cy].value = (page[cx][cy].value > 0) and 0 or drawingValue
+
+	 channel.main2audio:push({type="pattern", data=page});
+
       end
    end
    if (y > screenHeight - bottommargin + inbetweenmargin) then
@@ -163,7 +162,7 @@ function love.draw()
    end
 
    if playing then
-      love.graphics.draw(head, leftmargin + (playHead * cellWidth) , 0, 0, .5, .5)
+      love.graphics.draw(head, leftmargin + (playhead * cellWidth) , 0, 0, .5, .5)
    end
 
 end
