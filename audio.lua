@@ -26,9 +26,9 @@ function mapInto(x, in_min, in_max, out_min, out_max)
 end
 
 
-function getPitch(semitone)
+function getPitch(semitone, octave)
    local plusoctave = 0
-   local octave = -1
+   --local octave = 2
    if semitone > 11 then
       plusoctave = 1
       semitone = semitone % 12
@@ -76,13 +76,14 @@ while(true) do
       if pattern[index] then
 	 for i = 1, 12 do
 	    local v = pattern[index][i].value
+	    local o = pattern[index][i].octave
 	    if v > 0 then
 	       local s
 	       if (v <= #samples) then
 		  s = samples[v]:clone()
 	       end
 
-	       local p = getPitch(12 - i)
+	       local p = getPitch(12 - i, o)
 	       s:setPitch(p)
 	       love.audio.play(s)
 	    end

@@ -13,8 +13,15 @@ function love.keypressed(key)
    if key == "right" then
       bpm = bpm + 10
       bpm = math.min(300, bpm)
-
       channel.main2audio:push({type="bpm", data=bpm});
+   end
+   if key == "up" then
+      octave = octave + 1 
+      octave = math.min(5, octave)
+   end
+   if key == "down" then
+      octave = octave - 1 
+      octave = math.max(-5, octave)
    end
 
 end
@@ -22,6 +29,7 @@ end
 
 function love.load()
    bpm = 90
+   octave = 0
    thread = love.thread.newThread( 'audio.lua' )
    thread:start()
    channel		= {};
@@ -57,34 +65,34 @@ function love.load()
    pictureInBottomScale = .7
 
    head = love.graphics.newImage( 'resources/herman.png' )
-
-   image1 = love.graphics.newImage( 'resources/clam.png' )
-   image2 = love.graphics.newImage( 'resources/owl.png' )
-   image3 = love.graphics.newImage( 'resources/panda-bear.png' )
-   image4 = love.graphics.newImage( 'resources/antelope.png' )
-   image5 = love.graphics.newImage( 'resources/flamingo.png' )
-   image6 = love.graphics.newImage( 'resources/fox.png' )
-   image7 = love.graphics.newImage( 'resources/bee.png' )
-   image8 = love.graphics.newImage( 'resources/crab.png' )
-   image9 = love.graphics.newImage( 'resources/elephant.png' )
-   image10 = love.graphics.newImage( 'resources/crocodile.png' )
-   image11 = love.graphics.newImage( 'resources/kangaroo.png' )
-   image12 = love.graphics.newImage( 'resources/pig.png' )
-   image13 = love.graphics.newImage( 'resources/starfish.png' )
-
    color = colors.indigo
    drawingValue = 1
    page = initPage()
 
-   sounds = {image1, image2, image3, image4, image5, image6, image7, image8, image9, image10, image11, image12, image13}
 
-   local samples_names = {'marimba', "bd", "cb", "hihat-metal", "analog3c", "brass5c",
-		 "epiano2-1c", "prophet1c", "guiro", "727-lo-bongo", "727-ho-conga", "727-whistl", "musicnote14"}
+   local sample_data = {
+      {'clam', 'marimba'},
+      {'owl', 'bd'},
+      {'panda-bear', 'cb'},
+      {'antelope', 'hihat-metal'},
+      {'flamingo', 'analog3c'},
+      {'fox', 'brass5c'},
+      {'bee', 'epiano2-1c'},
+      {'crab', 'prophet1c'},
+      {'elephant', 'guiro'},
+      {'crocodile', '727-lo-bongo'},
+      {'kangaroo', '727-ho-conga'},
+      {'pig', '727-whistl'},
+      {'starfish', 'musicnote14'}
+   }
+   sprites = {}
    samples = {}
-   for i=1, #samples_names do
-      local data = love.sound.newSoundData( 'instruments/'..samples_names[i]..'.wav' )
+   for i = 1, #sample_data do
+      table.insert(sprites,  love.graphics.newImage('resources/'..sample_data[i][1]..'.png') )
+      local data = love.sound.newSoundData( 'instruments/'..sample_data[i][2]..'.wav' )
       table.insert(samples, love.audio.newSource(data, 'static'))
    end
+
    channel.main2audio:push({type="samples", data=samples});
    channel.main2audio:push({type="bpm", data=bpm});
 end
@@ -120,7 +128,7 @@ function love.mousepressed(x,y)
 	 local cx =  1 + math.floor((x - leftmargin) / cellWidth)
 	 local cy =  1 + math.floor((y - topmargin) / cellHeight)
 	 page[cx][cy].value = (page[cx][cy].value > 0) and 0 or drawingValue
-
+	 page[cx][cy].octave = octave
 	 channel.main2audio:push({type="pattern", data=page});
 
       end
@@ -128,9 +136,10 @@ function love.mousepressed(x,y)
    if (y > screenHeight - bottommargin + inbetweenmargin) then
       if (x > leftmargin and x < screenWidth - rightmargin) then
 	 local index = 1 + math.floor((x-leftmargin) / (bitmapSize * pictureInBottomScale))
-	 index = math.min(#sounds, index)
+	 index = math.min(#sprites, index)
+	 octave = 0
 	 local s = samples[index]:clone()
-	  love.audio.play(s)
+	 love.audio.play(s)
 	 drawingValue = index
       end
    end
@@ -172,7 +181,7 @@ function love.draw()
       for y = 1, vertical do
 	 local index = page[x][y].value
 	 if (index > 0) then
-	    love.graphics.draw(sounds[index],
+	    love.graphics.draw(sprites[index],
 			       leftmargin+pictureLeftMargin+(cellWidth*(x-1)),
 			       topmargin+pictureTopMargin+(cellHeight*(y-1)),
 			       0,
@@ -182,8 +191,8 @@ function love.draw()
       end
    end
 
-   for i = 1, #sounds do
-      local img = sounds[i]
+   for i = 1, #sprites do
+      local img = sprites[i]
       local size = pictureInBottomScale * bitmapSize
       if (i == drawingValue) then
 	 love.graphics.setColor(palette[color][1] - .1,
