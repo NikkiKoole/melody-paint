@@ -17,6 +17,10 @@ soundData1 = love.sound.newSoundData( 'instruments/marimba.wav' )
 sound1 = love.audio.newSource(soundData1, 'static')
 soundData2 = love.sound.newSoundData( 'instruments/CB.wav' )
 sound2 = love.audio.newSource(soundData2, 'static')
+soundData3 = love.sound.newSoundData( 'instruments/guitar.wav' )
+sound3 = love.audio.newSource(soundData3, 'static')
+soundData4 = love.sound.newSoundData( 'instruments/bd.wav' )
+sound4 = love.audio.newSource(soundData4, 'static')
 
 --local mytick = 0
 
@@ -88,6 +92,12 @@ while(true) do
 	       end
 	       if (v == 2) then
 		  s = sound2:clone()
+	       end
+	        if (v == 3) then
+		  s = sound3:clone()
+		end
+		 if (v == 4) then
+		  s = sound4:clone()
 	       end
 	       local p = getPitch(12 - i)
 	       s:setPitch(p)

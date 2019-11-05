@@ -44,14 +44,16 @@ function love.load()
    pictureInBottomScale = 1
 
    head = love.graphics.newImage( 'resources/herman.png' )
-   image1 = love.graphics.newImage( 'resources/picture4.png' )
-   image2 = love.graphics.newImage( 'resources/picture3.png' )
+   image1 = love.graphics.newImage( 'resources/picture1.png' )
+   image2 = love.graphics.newImage( 'resources/picture2.png' )
+   image3 = love.graphics.newImage( 'resources/picture3.png' )
+   image4 = love.graphics.newImage( 'resources/picture4.png' )
 
    color = colors.indigo
    drawingValue = 1
    page = initPage()
 
-   sounds = {image1, image2}
+   sounds = {image1, image2, image3, image4}
 
 end
 
