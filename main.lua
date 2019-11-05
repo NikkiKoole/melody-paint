@@ -20,7 +20,7 @@ function love.load()
 
    screenWidth = 1024
    screenHeight = 768
-   love.window.setMode(screenWidth, screenHeight)
+   --love.window.setMode(screenWidth, screenHeight)
    vertical = 12
    horizontal = 16
 
@@ -41,19 +41,38 @@ function love.load()
    topmargin = 48
    bottommargin = screenHeight - (cellHeight * vertical) - topmargin
    inbetweenmargin = 10
-   pictureInBottomScale = 1
+   pictureInBottomScale = .7
 
    head = love.graphics.newImage( 'resources/herman.png' )
-   image1 = love.graphics.newImage( 'resources/picture1.png' )
-   image2 = love.graphics.newImage( 'resources/picture2.png' )
-   image3 = love.graphics.newImage( 'resources/picture3.png' )
-   image4 = love.graphics.newImage( 'resources/picture4.png' )
+
+   image1 = love.graphics.newImage( 'resources/clam.png' )
+   image2 = love.graphics.newImage( 'resources/owl.png' )
+   image3 = love.graphics.newImage( 'resources/panda-bear.png' )
+   image4 = love.graphics.newImage( 'resources/antelope.png' )
+   image5 = love.graphics.newImage( 'resources/flamingo.png' )
+   image6 = love.graphics.newImage( 'resources/fox.png' )
+   image7 = love.graphics.newImage( 'resources/bee.png' )
+   image8 = love.graphics.newImage( 'resources/crab.png' )
+   image9 = love.graphics.newImage( 'resources/elephant.png' )
+   image10 = love.graphics.newImage( 'resources/crocodile.png' )
+   image11 = love.graphics.newImage( 'resources/kangaroo.png' )
+   image12 = love.graphics.newImage( 'resources/pig.png' )
+   image13 = love.graphics.newImage( 'resources/starfish.png' )
 
    color = colors.indigo
    drawingValue = 1
    page = initPage()
 
-   sounds = {image1, image2, image3, image4}
+   sounds = {image1, image2, image3, image4, image5, image6, image7, image8, image9, image10, image11, image12, image13}
+
+   local samples_names = {'marimba', "bd", "cb", "hihat-metal", "analog3c", "brass5c",
+		 "epiano2-1c", "prophet1c", "guiro", "727-lo-bongo", "727-ho-conga", "727-whistl", "musicnote14"}
+   samples = {}
+   for i=1, #samples_names do
+      local data = love.sound.newSoundData( 'instruments/'..samples_names[i]..'.wav' )
+      table.insert(samples, love.audio.newSource(data, 'static'))
+   end
+   channel.main2audio:push({type="samples", data=samples});
 
 end
 
@@ -64,6 +83,8 @@ function love.update(dt)
 	 playhead = v.data % horizontal
       end
    end
+   local error = thread:getError()
+   assert( not error, error )
 end
 
 
@@ -93,8 +114,10 @@ function love.mousepressed(x,y)
    end
    if (y > screenHeight - bottommargin + inbetweenmargin) then
       if (x > leftmargin and x < screenWidth - rightmargin) then
-	 local index = 1 + math.floor((x-leftmargin) / 100)
+	 local index = 1 + math.floor((x-leftmargin) / (bitmapSize * pictureInBottomScale))
 	 index = math.min(#sounds, index)
+	 local s = samples[index]:clone()
+	  love.audio.play(s)
 	 drawingValue = index
       end
    end
@@ -148,18 +171,18 @@ function love.draw()
 
    for i = 1, #sounds do
       local img = sounds[i]
-
+      local size = pictureInBottomScale * bitmapSize
       if (i == drawingValue) then
 	 love.graphics.setColor(palette[color][1] - .1,
 				palette[color][2] - .1,
 				palette[color][3] - .1)
 	 love.graphics.rectangle('fill',
-				 leftmargin + 100*(i-1), screenHeight - bottommargin + inbetweenmargin,
-				 100,100 )
+				 leftmargin + size*(i-1), screenHeight - bottommargin + inbetweenmargin,
+				 size,size )
       end
       love.graphics.setColor(1,1,1)
       love.graphics.draw(img,
-			 leftmargin + 100*(i-1), screenHeight - bottommargin + inbetweenmargin, 0,
+			 leftmargin + size*(i-1), screenHeight - bottommargin + inbetweenmargin, 0,
 			 pictureInBottomScale,pictureInBottomScale)
    end
 

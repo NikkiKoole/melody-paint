@@ -9,18 +9,14 @@ local lastTick = 0
 local lastBeat = -1
 local bpm = 124
 local pattern = {}
+local samples = {}
 channel 	= {};
 channel.audio2main	= love.thread.getChannel ( "audio2main" ); -- from thread
 channel.main2audio	= love.thread.getChannel ( "main2audio" ); --from main
 
-soundData1 = love.sound.newSoundData( 'instruments/marimba.wav' )
-sound1 = love.audio.newSource(soundData1, 'static')
-soundData2 = love.sound.newSoundData( 'instruments/CB.wav' )
-sound2 = love.audio.newSource(soundData2, 'static')
-soundData3 = love.sound.newSoundData( 'instruments/guitar.wav' )
-sound3 = love.audio.newSource(soundData3, 'static')
-soundData4 = love.sound.newSoundData( 'instruments/bd.wav' )
-sound4 = love.audio.newSource(soundData4, 'static')
+
+
+
 
 --local mytick = 0
 
@@ -65,6 +61,9 @@ while(true) do
       if (v.type == 'pattern') then
 	 pattern = v.data
       end
+      if (v.type == 'samples') then
+	 samples = v.data
+      end
    end
 
    local n = love.timer.getTime()
@@ -87,18 +86,10 @@ while(true) do
 	    local v = pattern[index][i].value
 	    if v > 0 then
 	       local s
-	       if (v == 1) then
-		  s = sound1:clone()
+	       if (v <= #samples) then
+		  s = samples[v]:clone()
 	       end
-	       if (v == 2) then
-		  s = sound2:clone()
-	       end
-	        if (v == 3) then
-		  s = sound3:clone()
-		end
-		 if (v == 4) then
-		  s = sound4:clone()
-	       end
+
 	       local p = getPitch(12 - i)
 	       s:setPitch(p)
 	       love.audio.play(s)
