@@ -71,6 +71,7 @@ while(true) do
    end
 
    if (math.floor(beat) ~= math.floor(lastBeat)) then
+      --print(math.floor(beat))
       channel.audio2main:push ({type="playhead", data=math.floor(beat)})
       local index = 1+ math.floor(beat) % 16
       if pattern[index] then
@@ -106,8 +107,8 @@ while(true) do
       end
       if (v.type == 'bpm') then
 	 bpm = v.data
-	 tick = lastTick
-	 beat = lastBeat
+	 --tick = lastTick
+	 --beat = lastBeat
       end
 
    end

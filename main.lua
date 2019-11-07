@@ -62,13 +62,12 @@ function love.load()
    topmargin = 48
    bottommargin = screenHeight - (cellHeight * vertical) - topmargin
    inbetweenmargin = 10
-   pictureInBottomScale = .7
+   pictureInBottomScale = .6
 
    head = love.graphics.newImage( 'resources/herman.png' )
-   color = colors.indigo
+   color = colors.dark_green
    drawingValue = 1
    page = initPage()
-
 
    local sample_data = {
       {'clam', 'marimba'},
@@ -83,7 +82,10 @@ function love.load()
       {'crocodile', '727-lo-bongo'},
       {'kangaroo', '727-ho-conga'},
       {'pig', '727-whistl'},
-      {'starfish', 'musicnote14'}
+      {'starfish', 'musicnote14'},
+      {'snake', 'mallet-c2'},
+      {'snake2', 'mallet-c4'},
+      {'badger', 'glockensp-c4'}
    }
    sprites = {}
    samples = {}
@@ -130,9 +132,9 @@ function love.mousepressed(x,y)
 	 page[cx][cy].value = (page[cx][cy].value > 0) and 0 or drawingValue
 	 page[cx][cy].octave = octave
 	 channel.main2audio:push({type="pattern", data=page});
-
       end
    end
+   
    if (y > screenHeight - bottommargin + inbetweenmargin) then
       if (x > leftmargin and x < screenWidth - rightmargin) then
 	 local index = 1 + math.floor((x-leftmargin) / (bitmapSize * pictureInBottomScale))
