@@ -16,11 +16,11 @@ function love.keypressed(key)
       channel.main2audio:push({type="bpm", data=bpm});
    end
    if key == "up" then
-      octave = octave + 1 
+      octave = octave + 1
       octave = math.min(5, octave)
    end
    if key == "down" then
-      octave = octave - 1 
+      octave = octave - 1
       octave = math.max(-5, octave)
    end
 
@@ -68,6 +68,25 @@ function love.load()
    color = colors.dark_green
    drawingValue = 1
    page = initPage()
+
+
+
+
+ -- local sample_data = {
+ --      {'clam', 'tpl-dnb/bongos'},
+ --      {'owl', 'tpl-dnb/clap'},
+ --      {'panda-bear', 'tpl-dnb/crash'},
+ --      {'antelope', 'tpl-dnb/drum'},
+ --      {'flamingo', 'tpl-dnb/hihat'},
+ --      {'fox', 'tpl-dnb/hihat-open'},
+ --      {'bee', 'tpl-dnb/kick_01'},
+ --      {'crab', 'tpl-dnb/kick_02'},
+ --      {'elephant', 'tpl-dnb/snare_01'},
+ --      {'crocodile', 'tpl-dnb/snare_02'},
+ --      {'kangaroo', '727-ho-conga'},
+ --      {'pig', '727-whistl'},
+ --      {'starfish', 'musicnote14'}
+ --   }
 
    local sample_data = {
       {'clam', 'marimba'},
