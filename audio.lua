@@ -74,7 +74,7 @@ while(true) do
    if (math.floor(beat) % 2 == 1 and math.floor(tick) == 96/6) or
    (math.floor(beat) % 2 == 0 and math.floor(tick) == 0)  then
 
-      --channel.audio2main:push ({type="playhead", data=math.floor(beat)})
+      channel.audio2main:push ({type="playhead", data=math.floor(beat)})
       local index = 1+ math.floor(beat) % 16
       if pattern[index] then
       	 for i = 1, 12 do
