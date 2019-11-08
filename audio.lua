@@ -67,37 +67,39 @@ while(true) do
    local beat = time * (bpm / 60) * 4
    local tick = ((beat % 1) * (96))
    if math.floor(tick) - math.floor(lastTick) > 1 then
-      --print('thread: missed ticks:', math.floor(beat), math.floor(tick), math.floor(lastTick))
+      print('thread: missed ticks:', math.floor(beat), math.floor(tick), math.floor(lastTick))
    end
 
-   if (math.floor(beat) ~= math.floor(lastBeat)) then
-      --print(math.floor(beat))
-      channel.audio2main:push ({type="playhead", data=math.floor(beat)})
+
+   if (math.floor(beat) % 2 == 1 and math.floor(tick) == 96/6) or
+   (math.floor(beat) % 2 == 0 and math.floor(tick) == 0)  then
+
+      --channel.audio2main:push ({type="playhead", data=math.floor(beat)})
       local index = 1+ math.floor(beat) % 16
       if pattern[index] then
-	 for i = 1, 12 do
-	    local v = pattern[index][i].value
-	    local o = pattern[index][i].octave
-	    if v > 0 then
-	       local s
-	       if (v <= #samples) then
-		  s = samples[v]:clone()
-	       end
+      	 for i = 1, 12 do
+      	    local v = pattern[index][i].value
+      	    local o = pattern[index][i].octave
+      	    if v > 0 then
+      	       local s
+      	       if (v <= #samples) then
+      		  s = samples[v]:clone()
+      	       end
 
-	       local p = getPitch(12 - i, o)
-	       s:setPitch(p)
-	       love.audio.play(s)
-	    end
-	 end
+      	       local p = getPitch(12 - i, o)
+      	       s:setPitch(p)
+      	       love.audio.play(s)
+      	    end
+      	 end
       end
 
    end
-
-   lastTick = tick
    lastBeat = beat
-   love.timer.sleep(0.01)
+   lastTick = tick
 
-      local v = channel.main2audio:pop();
+   love.timer.sleep(0.001)
+
+   local v = channel.main2audio:pop();
    if v then
       if (v.type == 'pattern') then
 	 pattern = v.data
@@ -107,8 +109,7 @@ while(true) do
       end
       if (v.type == 'bpm') then
 	 bpm = v.data
-	 --tick = lastTick
-	 --beat = lastBeat
+	 print('bpm: ', bpm)
       end
 
    end

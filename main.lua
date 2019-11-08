@@ -153,7 +153,7 @@ function love.mousepressed(x,y)
 	 channel.main2audio:push({type="pattern", data=page});
       end
    end
-   
+
    if (y > screenHeight - bottommargin + inbetweenmargin) then
       if (x > leftmargin and x < screenWidth - rightmargin) then
 	 local index = 1 + math.floor((x-leftmargin) / (bitmapSize * pictureInBottomScale))
