@@ -72,40 +72,40 @@ function love.load()
 
 
 
- -- local sample_data = {
- --      {'clam', 'tpl-dnb/bongos'},
- --      {'owl', 'tpl-dnb/clap'},
- --      {'panda-bear', 'tpl-dnb/crash'},
- --      {'antelope', 'tpl-dnb/drum'},
- --      {'flamingo', 'tpl-dnb/hihat'},
- --      {'fox', 'tpl-dnb/hihat-open'},
- --      {'bee', 'tpl-dnb/kick_01'},
- --      {'crab', 'tpl-dnb/kick_02'},
- --      {'elephant', 'tpl-dnb/snare_01'},
- --      {'crocodile', 'tpl-dnb/snare_02'},
- --      {'kangaroo', '727-ho-conga'},
- --      {'pig', '727-whistl'},
- --      {'starfish', 'musicnote14'}
- --   }
-
-   local sample_data = {
-      {'clam', 'marimba'},
-      {'owl', 'bd'},
-      {'panda-bear', 'cb'},
-      {'antelope', 'hihat-metal'},
-      {'flamingo', 'analog3c'},
-      {'fox', 'brass5c'},
-      {'bee', 'epiano2-1c'},
-      {'crab', 'prophet1c'},
-      {'elephant', 'guiro'},
-      {'crocodile', '727-lo-bongo'},
+ local sample_data = {
+      {'clam', 'tpl-dnb/bongos'},
+      {'owl', 'tpl-dnb/clap'},
+      {'panda-bear', 'tpl-dnb/crash'},
+      {'antelope', 'tpl-dnb/drum'},
+      {'flamingo', 'tpl-dnb/hihat'},
+      {'fox', 'tpl-dnb/hihat-open'},
+      {'bee', 'tpl-dnb/kick_01'},
+      {'crab', 'tpl-dnb/kick_02'},
+      {'elephant', 'tpl-dnb/snare_01'},
+      {'crocodile', 'tpl-dnb/snare_02'},
       {'kangaroo', '727-ho-conga'},
       {'pig', '727-whistl'},
-      {'starfish', 'musicnote14'},
-      {'snake', 'mallet-c2'},
-      {'snake2', 'mallet-c4'},
-      {'badger', 'glockensp-c4'}
+      {'starfish', 'musicnote14'}
    }
+
+   -- local sample_data = {
+   --    {'clam', 'marimba'},
+   --    {'owl', 'bd'},
+   --    {'panda-bear', 'cb'},
+   --    {'antelope', 'hihat-metal'},
+   --    {'flamingo', 'analog3c'},
+   --    {'fox', 'brass5c'},
+   --    {'bee', 'epiano2-1c'},
+   --    {'crab', 'prophet1c'},
+   --    {'elephant', 'guiro'},
+   --    {'crocodile', 'BASS-BigFM'},
+   --    {'kangaroo', 'EPIANO-LomarzOneNote'},
+   --    {'pig', 'BASS-1VCOacidic2'},
+   --    {'starfish', 'CHORD-4OSCSofttone'},
+   --    {'snake', 'mallet-c2'},
+   --    {'snake2', 'mallet-c4'},
+   --    {'badger', 'glockensp-c4'}
+   -- }
    sprites = {}
    samples = {}
    for i = 1, #sample_data do
